@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Platform,StyleSheet,Text,View, FlatList} from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firebase from 'firebase';
 
 type Props = {};
 export default class Home extends Component<Props> {
@@ -14,21 +15,29 @@ export default class Home extends Component<Props> {
   }
 
   componentWillMount(){
-    // axios.post('https://delowarhossaintb.000webhostapp.com/dynamic.php/users', {
-    //   name:'Sanjida',
-    //   email:'san@yahoo.com',
-    //   pass:4512,
-    // })
-    // .then((res) => {
-    //   console.log(res)
-    // })
-    // .catch(() => {
-    //   console.log(error)
-    // })
+    this.loadfromphp();
+    
+  }
+
+  loadfromphp(){
     axios.get('https://delowarhossaintb.000webhostapp.com/dynamic.php/users')
     .then((res) => {
       console.log(res)
       this.setState({data:res.data})
+    })
+    .catch(() => {
+      console.log(error)
+    })
+  }
+
+  savetophp(){
+    axios.post('https://delowarhossaintb.000webhostapp.com/dynamic.php/users', {
+      name:'Sanjida',
+      email:'san@yahoo.com',
+      pass:4512,
+    })
+    .then((res) => {
+      console.log(res)
     })
     .catch(() => {
       console.log(error)
@@ -46,6 +55,7 @@ export default class Home extends Component<Props> {
         </Text>
         <Text style={styles.instructions}>
           instructions
+           <Icon name="caret-down" color={"#red"} size={15} />
         </Text>
         <FlatList
           data={this.state.data}
